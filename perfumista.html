@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mr.perfumista — Niche & Designer Fragrance, Noble Park</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152E29;        /* deep bottle-glass green */
+    --ink-2:#0E211D;
+    --parchment:#F6F1E6;  /* paper background */
+    --paper:#FCFAF4;
+    --gold:#B8912F;       /* foil gold */
+    --gold-light:#D9B564;
+    --plum:#4A1F2E;       /* accent / hover */
+    --text:#211A12;
+    --text-soft:rgba(33,26,18,0.68);
+    --line: rgba(21,46,41,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--text);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:500;
+    margin:0;
+    color:var(--ink);
+  }
+  a{color:inherit; text-decoration:none;}
+  .label{
+    font-family:'Jost'; font-weight:600; font-size:11.5px;
+    letter-spacing:3px; text-transform:uppercase;
+    color:var(--gold);
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ===== texture: faint repeating bottle line-art ===== */
+  .bottle-row{
+    display:flex; justify-content:space-between; opacity:0.05;
+    position:absolute; inset:0; pointer-events:none; overflow:hidden;
+  }
+
+  /* ===== nav ===== */
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 6vw;
+    max-width:1320px; margin:0 auto;
+    position:relative; z-index:5;
+  }
+  .logotype{
+    font-family:'Cormorant Garamond'; font-weight:600; font-style:italic;
+    font-size:26px; letter-spacing:1px; color:var(--ink);
+  }
+  .logotype b{ font-style:normal; font-weight:600; }
+  nav ul{
+    list-style:none; display:flex; gap:38px; margin:0; padding:0;
+  }
+  nav ul a{
+    font-size:12.5px; letter-spacing:2px; text-transform:uppercase; font-weight:500;
+    color:var(--ink); position:relative; padding-bottom:6px;
+  }
+  nav ul a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:var(--gold); transform:scaleX(0); transform-origin:left;
+    transition:transform .3s ease;
+  }
+  nav ul a:hover::after{ transform:scaleX(1); }
+  .nav-icon{ font-size:13px; letter-spacing:2px; color:var(--ink); }
+  @media(max-width:840px){ nav ul{ display:none; } }
+
+  /* ===== hero ===== */
+  .hero{
+    position:relative;
+    max-width:1320px; margin:0 auto;
+    padding:60px 6vw 90px;
+    display:grid; grid-template-columns:1.05fr 0.95fr;
+    gap:40px; align-items:center;
+  }
+  @media(max-width:900px){ .hero{ grid-template-columns:1fr; padding-bottom:50px; } }
+  .hero .label{ display:block; margin-bottom:22px; }
+  .hero h1{
+    font-size:clamp(46px, 5.6vw, 78px);
+    line-height:1.02; letter-spacing:-0.5px;
+  }
+  .hero h1 em{
+    font-style:italic; color:var(--plum);
+  }
+  .hero p.lede{
+    font-size:17.5px; line-height:1.75; color:var(--text-soft);
+    max-width:46ch; margin:26px 0 36px;
+  }
+  .hero-ctas{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn-solid, .btn-line{
+    font-family:'Jost'; font-weight:500; font-size:13px; letter-spacing:2px; text-transform:uppercase;
+    padding:16px 30px; display:inline-block;
+    transition:all .25s ease;
+  }
+  .btn-solid{ background:var(--ink); color:var(--parchment); }
+  .btn-solid:hover{ background:var(--plum); }
+  .btn-line{ border:1px solid var(--ink); color:var(--ink); }
+  .btn-line:hover{ background:var(--ink); color:var(--parchment); }
+
+  /* hero bottle illustration */
+  .hero-art{ display:flex; justify-content:center; position:relative; }
+  .hero-art svg{ width:min(300px,72vw); }
+  .hero-art .ring{
+    position:absolute; width:380px; height:380px; max-width:80vw; max-height:80vw;
+    border:1px solid var(--gold); border-radius:50%; opacity:0.4;
+    animation:spin-slow 60s linear infinite;
+  }
+  .hero-art .ring2{
+    position:absolute; width:440px; height:440px; max-width:90vw; max-height:90vw;
+    border:1px dashed var(--gold); border-radius:50%; opacity:0.25;
+    animation:spin-slow-rev 90s linear infinite;
+  }
+  @keyframes spin-slow{ from{transform:rotate(0);} to{transform:rotate(360deg);} }
+  @keyframes spin-slow-rev{ from{transform:rotate(360deg);} to{transform:rotate(0);} }
+  .hero-art .mist{ animation:drift 5s ease-in-out infinite; transform-origin:center; }
+  @keyframes drift{ 0%,100%{ opacity:0.5; transform:translateY(0);} 50%{ opacity:0.9; transform:translateY(-6px);} }
+
+  /* ===== note trail marquee ===== */
+  .trail{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:18px 0; overflow:hidden; white-space:nowrap;
+    background:var(--paper);
+  }
+  .trail-track{ display:inline-block; animation:scrollx 30s linear infinite; }
+  .trail-track span{
+    font-family:'Cormorant Garamond'; font-style:italic; font-size:19px;
+    color:var(--text-soft); margin:0 30px; position:relative;
+  }
+  .trail-track span::after{
+    content:"·"; color:var(--gold); margin-left:30px; font-style:normal;
+  }
+  @keyframes scrollx{ 0%{ transform:translateX(0);} 100%{ transform:translateX(-50%);} }
+
+  /* ===== sections ===== */
+  .section{ max-width:1320px; margin:0 auto; padding:100px 6vw; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:56px; gap:24px; flex-wrap:wrap;
+  }
+  .section-head h2{ font-size:clamp(32px,4vw,48px); }
+  .section-head p{ color:var(--text-soft); font-size:15px; max-width:38ch; }
+
+  /* ===== product grid ===== */
+  .grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  @media(max-width:900px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .grid{ grid-template-columns:1fr; } }
+
+  .pcard{
+    background:var(--paper); padding:34px 28px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:background .25s ease;
+  }
+  .pcard:hover{ background:var(--parchment); }
+  .pcard .gender{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
+  .pcard h3{ font-size:25px; line-height:1.15; }
+  .pyramid-mini{ display:flex; flex-direction:column; gap:4px; margin:6px 0 4px; }
+  .pyramid-mini .row{ display:flex; gap:8px; font-size:12.5px; color:var(--text-soft); }
+  .pyramid-mini .tag{
+    font-weight:500; color:var(--ink); min-width:44px; font-size:10.5px; letter-spacing:1px; text-transform:uppercase;
+    padding-top:1px;
+  }
+  .pcard .price{
+    margin-top:auto; padding-top:14px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .pcard .price b{ font-family:'Cormorant Garamond'; font-size:20px; color:var(--plum); font-weight:600; }
+  .pcard .price a{ font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink); border-bottom:1px solid var(--gold); padding-bottom:2px; }
+
+  /* ===== pyramid signature section ===== */
+  .pyramid-section{
+    background:var(--ink); color:var(--parchment);
+    position:relative; overflow:hidden;
+  }
+  .pyramid-inner{
+    max-width:1320px; margin:0 auto; padding:110px 6vw;
+    display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  }
+  @media(max-width:900px){ .pyramid-inner{ grid-template-columns:1fr; } }
+  .pyramid-section .label{ color:var(--gold-light); }
+  .pyramid-section h2{ color:var(--parchment); font-size:clamp(32px,4vw,48px); margin:16px 0 22px; }
+  .pyramid-section p{ color:rgba(246,241,230,0.72); font-size:16px; line-height:1.75; max-width:44ch; }
+  .pyramid-legend{ margin-top:34px; display:flex; flex-direction:column; gap:18px; }
+  .pyramid-legend .item{ display:flex; gap:16px; align-items:baseline; }
+  .pyramid-legend .num{ font-family:'Cormorant Garamond'; font-style:italic; font-size:22px; color:var(--gold-light); width:26px; }
+  .pyramid-legend .txt b{ display:block; font-family:'Jost'; font-weight:500; letter-spacing:1px; text-transform:uppercase; font-size:13px; margin-bottom:3px; color:var(--parchment); }
+  .pyramid-legend .txt span{ font-size:14px; color:rgba(246,241,230,0.6); }
+
+  .pyramid-visual{ display:flex; justify-content:center; }
+  .pyramid-visual svg{ width:min(360px,80vw); }
+  .pyramid-visual .layer{ transition:opacity .3s ease; }
+  .pyramid-visual .layer:hover{ opacity:0.75; }
+
+  /* ===== about / story ===== */
+  .story{
+    max-width:1320px; margin:0 auto; padding:110px 6vw;
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:70px; align-items:center;
+  }
+  @media(max-width:900px){ .story{ grid-template-columns:1fr; } }
+  .story-frame{
+    aspect-ratio:4/5; border:1px solid var(--gold);
+    padding:18px; position:relative;
+  }
+  .story-frame::before{
+    content:""; position:absolute; inset:8px; border:1px solid var(--line);
+  }
+  .story-frame-inner{
+    width:100%; height:100%; background:linear-gradient(160deg, var(--ink), var(--plum));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .story-frame-inner svg{ width:55%; opacity:0.9; }
+  .story h2{ font-size:clamp(30px,4vw,44px); margin-bottom:20px; }
+  .story p{ font-size:16px; line-height:1.85; color:var(--text-soft); margin-bottom:16px; }
+  .story blockquote{
+    font-family:'Cormorant Garamond'; font-style:italic; font-size:22px;
+    color:var(--ink); border-left:2px solid var(--gold); padding-left:20px;
+    margin:26px 0 0;
+  }
+
+  /* ===== reviews ===== */
+  .reviews-band{ background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .reviews-inner{ max-width:1320px; margin:0 auto; padding:100px 6vw; }
+  .reviews-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:44px; margin-top:50px; }
+  @media(max-width:900px){ .reviews-grid{ grid-template-columns:1fr; gap:36px; } }
+  .review{ text-align:left; }
+  .review .stars{ color:var(--gold); font-size:15px; letter-spacing:3px; margin-bottom:16px; }
+  .review p{ font-family:'Cormorant Garamond'; font-size:20px; line-height:1.6; color:var(--ink); font-style:italic; margin-bottom:18px; }
+  .review cite{ font-style:normal; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--text-soft); }
+
+  /* ===== visit store ===== */
+  .visit{
+    max-width:1320px; margin:0 auto; padding:100px 6vw;
+    display:grid; grid-template-columns:1fr 1fr; gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  @media(max-width:800px){ .visit{ grid-template-columns:1fr; } }
+  .visit > div{ background:var(--paper); padding:56px 46px; }
+  .visit h3{ font-size:28px; margin-bottom:22px; }
+  .visit .row{ display:flex; gap:18px; margin-bottom:22px; }
+  .visit .row .k{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); width:70px; flex-shrink:0; padding-top:2px; }
+  .visit .row .v{ font-size:16px; color:var(--text); line-height:1.6; }
+  .visit-map{ display:flex; align-items:center; justify-content:center; }
+  .visit-map svg{ width:70%; opacity:0.9; }
+
+  /* ===== newsletter ===== */
+  .newsletter{
+    background:var(--ink); color:var(--parchment); text-align:center;
+    padding:100px 6vw; position:relative;
+  }
+  .newsletter h2{ color:var(--parchment); font-size:clamp(30px,4.5vw,50px); margin-bottom:16px; }
+  .newsletter p{ color:rgba(246,241,230,0.7); font-size:15.5px; max-width:44ch; margin:0 auto 36px; }
+  .nform{ display:flex; justify-content:center; gap:0; max-width:440px; margin:0 auto; border-bottom:1px solid var(--gold-light); padding-bottom:4px; }
+  .nform input{
+    flex:1; background:transparent; border:none; outline:none;
+    color:var(--parchment); font-family:'Jost'; font-size:15px; padding:10px 6px;
+  }
+  .nform input::placeholder{ color:rgba(246,241,230,0.45); }
+  .nform button{
+    background:none; border:none; color:var(--gold-light);
+    font-family:'Jost'; font-weight:500; letter-spacing:2px; text-transform:uppercase; font-size:12px;
+    cursor:pointer; padding:10px 4px;
+  }
+
+  /* ===== footer ===== */
+  footer{ background:var(--ink-2); color:rgba(246,241,230,0.6); padding:60px 6vw 30px; }
+  .footer-inner{
+    max-width:1320px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px;
+    padding-bottom:40px; border-bottom:1px solid rgba(246,241,230,0.12);
+  }
+  .footer-inner .logotype{ color:var(--parchment); margin-bottom:10px; }
+  .footer-inner p{ max-width:34ch; font-size:14px; line-height:1.7; }
+  .footer-cols{ display:flex; gap:60px; flex-wrap:wrap; }
+  .footer-col h4{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gold-light); margin-bottom:16px; }
+  .footer-col a{ display:block; font-size:14px; margin-bottom:10px; color:rgba(246,241,230,0.65); }
+  .footer-col a:hover{ color:var(--parchment); }
+  .footer-bottom{
+    max-width:1320px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:12px; padding-top:24px; color:rgba(246,241,230,0.4);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logotype">mr.<b>perfumista</b></div>
+  <ul>
+    <li><a href="#arrivals">New Arrivals</a></li>
+    <li><a href="#bestsellers">Best Sellers</a></li>
+    <li><a href="#story">About</a></li>
+    <li><a href="#visit">Visit</a></li>
+  </ul>
+  <div class="nav-icon">Bag (0)</div>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="label">Noble Park, Victoria</span>
+    <h1>Fragrance,<br><em>decanted</em> with care.</h1>
+    <p class="lede">A curated cabinet of over a thousand niche and designer scents — sampled by the millilitre, poured by hand, and matched to you by someone who actually remembers what you wore last time.</p>
+    <div class="hero-ctas">
+      <a href="#arrivals" class="btn-solid">Shop New Arrivals</a>
+      <a href="#visit" class="btn-line">Visit the Shop</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="ring"></div>
+    <div class="ring2"></div>
+    <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
+      <rect x="80" y="20" width="60" height="34" rx="4" fill="#B8912F"/>
+      <rect x="92" y="4" width="36" height="20" rx="3" fill="#0E211D"/>
+      <path class="mist" d="M60 90 Q60 60 90 56 L130 56 Q160 60 160 90 L172 270 Q172 300 140 300 L80 300 Q48 300 48 270 Z"
+        fill="none" stroke="#F6F1E6" stroke-width="2.5" opacity="0.9"/>
+      <path d="M60 90 Q60 60 90 56 L130 56 Q160 60 160 90 L172 270 Q172 300 140 300 L80 300 Q48 300 48 270 Z"
+        fill="#F6F1E6" fill-opacity="0.06"/>
+      <line x1="48" y1="150" x2="172" y2="150" stroke="#B8912F" stroke-width="1" opacity="0.6"/>
+      <text x="110" y="185" text-anchor="middle" fill="#D9B564" font-family="Cormorant Garamond" font-style="italic" font-size="15">no. 12</text>
+    </svg>
+  </div>
+</header>
+
+<div class="trail" aria-hidden="true">
+  <div class="trail-track">
+    <span>Bergamot</span><span>Oud</span><span>Tonka Bean</span><span>Saffron</span><span>Amber</span><span>Vetiver</span><span>Jasmine Sambac</span><span>Cedarwood</span><span>Ambergris</span>
+    <span>Bergamot</span><span>Oud</span><span>Tonka Bean</span><span>Saffron</span><span>Amber</span><span>Vetiver</span><span>Jasmine Sambac</span><span>Cedarwood</span><span>Ambergris</span>
+  </div>
+</div>
+
+<section class="section" id="arrivals">
+  <div class="section-head">
+    <div>
+      <span class="label">Just In</span>
+      <h2>New Arrivals</h2>
+    </div>
+    <p>Fresh into the cabinet this month — sampled first, decanted on request.</p>
+  </div>
+  <div class="grid">
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Sound of a Ricochet</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Vanilla Absolute</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Tonka Bean</span></div>
+        <div class="row"><span class="tag">Base</span><span>Sandalwood</span></div>
+      </div>
+      <div class="price"><b>from $30</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Blue Talisman</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Pear, Bergamot, Ginger</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Orange Blossom</span></div>
+        <div class="row"><span class="tag">Base</span><span>Musk, Cedar</span></div>
+      </div>
+      <div class="price"><b>from $20</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Rude Oud</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Raspberry, Saffron</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Leather, Rose</span></div>
+        <div class="row"><span class="tag">Base</span><span>Oud, Amber</span></div>
+      </div>
+      <div class="price"><b>from $40</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>NUMERO CINQUE V</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Coffee, Ginger</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Dark Chocolate, Oud</span></div>
+        <div class="row"><span class="tag">Base</span><span>Sandalwood, Cambodian Oud</span></div>
+      </div>
+      <div class="price"><b>from $18</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Bal d'Afrique Absolu</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Blackcurrant, Lemon</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Praline, Violet</span></div>
+        <div class="row"><span class="tag">Base</span><span>Black Amber, Vetiver</span></div>
+      </div>
+      <div class="price"><b>from $18</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Outlands</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Frankincense, Cardamom</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Patchouli, Saffron, Rose</span></div>
+        <div class="row"><span class="tag">Base</span><span>Amber, Oud, Musk</span></div>
+      </div>
+      <div class="price"><b>from $22</b><a href="#">Details →</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="bestsellers" style="padding-top:0;">
+  <div class="section-head">
+    <div>
+      <span class="label">Customer Favourites</span>
+      <h2>Best Sellers</h2>
+    </div>
+    <p>The scents people keep coming back to refill.</p>
+  </div>
+  <div class="grid">
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Baccarat Rouge 540<br>Extrait de Parfum</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Bitter Almond, Saffron</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Egyptian Jasmine, Cedar</span></div>
+        <div class="row"><span class="tag">Base</span><span>Ambergris, Musk</span></div>
+      </div>
+      <div class="price"><b>from $25</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Men</span>
+      <h3>Tygar</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Notes</span><span>Grapefruit, Ginger, Ambrox</span></div>
+      </div>
+      <div class="price"><b>from $20</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Aventus</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Pineapple, Black Currant</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Birch, Moroccan Jasmine</span></div>
+        <div class="row"><span class="tag">Base</span><span>Musk, Oakmoss</span></div>
+      </div>
+      <div class="price"><b>from $16</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Men</span>
+      <h3>Dior Homme Parfum</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Tuscan Iris, Orange</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Leather, Rose</span></div>
+        <div class="row"><span class="tag">Base</span><span>Sandalwood, Oud</span></div>
+      </div>
+      <div class="price"><b>from $15</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Blue Sapphire</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Lemon, Saffron</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Rose, Magnolia</span></div>
+        <div class="row"><span class="tag">Base</span><span>Oud, Amber</span></div>
+      </div>
+      <div class="price"><b>from $35</b><a href="#">Details →</a></div>
+    </div>
+    <div class="pcard">
+      <span class="gender">Women & Men</span>
+      <h3>Angels' Share</h3>
+      <div class="pyramid-mini">
+        <div class="row"><span class="tag">Top</span><span>Cognac</span></div>
+        <div class="row"><span class="tag">Heart</span><span>Cinnamon, Tonka Bean</span></div>
+        <div class="row"><span class="tag">Base</span><span>Praline, Sandalwood</span></div>
+      </div>
+      <div class="price"><b>from $20</b><a href="#">Details →</a></div>
+    </div>
+  </div>
+</section>
+
+<div class="pyramid-section">
+  <div class="pyramid-inner">
+    <div>
+      <span class="label">The Anatomy of a Scent</span>
+      <h2>Reading the pyramid.</h2>
+      <p>Every fragrance unfolds in three acts. Knowing them is the fastest way to tell if a scent will actually suit you — before you've even worn it home.</p>
+      <div class="pyramid-legend">
+        <div class="item">
+          <span class="num">01</span>
+          <div class="txt"><b>Top Notes</b><span>The first ten minutes. Citrus, pepper, light fruit — what greets the room.</span></div>
+        </div>
+        <div class="item">
+          <span class="num">02</span>
+          <div class="txt"><b>Heart Notes</b><span>The true character, from florals to spice, once the top notes fade.</span></div>
+        </div>
+        <div class="item">
+          <span class="num">03</span>
+          <div class="txt"><b>Base Notes</b><span>Woods, musk, amber — what lingers on skin and fabric hours later.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pyramid-visual">
+      <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="layer" points="160,20 210,100 110,100" fill="#D9B564" opacity="0.9"/>
+        <polygon class="layer" points="110,100 210,100 250,190 70,190" fill="#B8912F" opacity="0.75"/>
+        <polygon class="layer" points="70,190 250,190 290,280 30,280" fill="#8a6c22" opacity="0.6"/>
+        <text x="160" y="65" text-anchor="middle" fill="#152E29" font-family="Jost" font-size="11" letter-spacing="1.5">TOP</text>
+        <text x="160" y="150" text-anchor="middle" fill="#152E29" font-family="Jost" font-size="11" letter-spacing="1.5">HEART</text>
+        <text x="160" y="240" text-anchor="middle" fill="#F6F1E6" font-family="Jost" font-size="11" letter-spacing="1.5">BASE</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<section class="story" id="story">
+  <div class="story-frame">
+    <div class="story-frame-inner">
+      <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="75" y="18" width="50" height="28" rx="4" fill="#D9B564"/>
+        <rect x="85" y="4" width="30" height="16" rx="3" fill="#F6F1E6"/>
+        <path d="M55 78 Q55 52 82 48 L118 48 Q145 52 145 78 L156 235 Q156 260 128 260 L72 260 Q44 260 44 235 Z"
+          fill="none" stroke="#F6F1E6" stroke-width="2"/>
+        <line x1="44" y1="128" x2="156" y2="128" stroke="#D9B564" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+  <div>
+    <span class="label">Our Story</span>
+    <h2>From a living-room cabinet to a shop in Noble Park.</h2>
+    <p>It started as a hobby — a personal collection of favourite fragrances kept in an LED glass cabinet, brought out for friends over coffee. What began as free samples and comfortable Moroccan sofas outgrew the living room fast.</p>
+    <p>Today the same passion fills a small shop in the heart of Noble Park: over a thousand niche and designer fragrances, decanted and sold by someone who still remembers exactly why you loved the first one.</p>
+    <blockquote>"Every scent gets sampled before it's sold — nothing leaves the counter unexplained."</blockquote>
+  </div>
+</section>
+
+<div class="reviews-band">
+  <div class="reviews-inner">
+    <div class="section-head" style="margin-bottom:0;">
+      <div>
+        <span class="label">In Their Words</span>
+        <h2>Customer Reviews</h2>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>A genuinely wonderful buying experience — the owner's knowledge and the sheer range of niche and designer bottles make this a real destination for scent lovers.</p>
+        <cite>— FM Mo</cite>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>We've been regulars for a while now. The one-on-one advice is thoughtful, the welcome is warm, and we always leave having tried something new.</p>
+        <cite>— Simon Facey</cite>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>Harun's knowledge and warmth make this an easy recommendation for anyone with even a passing interest in fragrance.</p>
+        <cite>— A Better Life</cite>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="visit" id="visit">
+  <div>
+    <span class="label">Come Say Hello</span>
+    <h3>Visit the Shop</h3>
+    <div class="row"><span class="k">Address</span><span class="v">2/46 Douglas Street<br>Noble Park, VIC 3174</span></div>
+    <div class="row"><span class="k">Hours</span><span class="v">Open 7 Days<br>1pm – 6pm</span></div>
+    <div class="row"><span class="k">Phone</span><span class="v">0402 465 537</span></div>
+    <a href="#" class="btn-line" style="margin-top:10px;">Get Directions</a>
+  </div>
+  <div class="visit-map">
+    <svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg">
+      <path d="M110 10 C60 10 24 46 24 96 C24 156 110 250 110 250 C110 250 196 156 196 96 C196 46 160 10 110 10 Z"
+        fill="none" stroke="#B8912F" stroke-width="2"/>
+      <circle cx="110" cy="96" r="34" fill="#152E29"/>
+      <text x="110" y="102" text-anchor="middle" fill="#D9B564" font-family="Cormorant Garamond" font-style="italic" font-size="16">MP</text>
+    </svg>
+  </div>
+</section>
+
+<div class="newsletter">
+  <span class="label">Stay Scented</span>
+  <h2 style="margin-top:16px;">The Monthly Catalogue</h2>
+  <p>New arrivals, restocks, and small-batch decants — straight to your inbox once a month, nothing more.</p>
+  <form class="nform" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thank you';">
+    <input type="email" placeholder="Email address" required>
+    <button type="submit">Sign Up</button>
+  </form>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="logotype">mr.<b>perfumista</b></div>
+      <p>Niche and designer decanting fragrance store, hand-poured in Noble Park, Victoria.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="#arrivals">New Arrivals</a>
+        <a href="#bestsellers">Best Sellers</a>
+        <a href="#">Sale</a>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <a href="#story">About</a>
+        <a href="#visit">Contact</a>
+        <a href="#">Shipping & Returns</a>
+      </div>
+      <div class="footer-col">
+        <h4>Social</h4>
+        <a href="https://www.instagram.com/mr.perfumista/?hl=en">Instagram</a>
+        <a href="https://www.facebook.com/mr.perfumista">Facebook</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 mr.perfumista</span>
+    <span>Noble Park, Victoria</span>
+  </div>
+</footer>
+
+</body>
+</html>
